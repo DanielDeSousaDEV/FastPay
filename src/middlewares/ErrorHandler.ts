@@ -1,9 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { FormatZodErrors } from '../utils/funcs/FormatZodErrors';
-// import { UserNotFound } from "../exceptions/UserNotFound";
-// import { EmailAlreadyUsedError } from "../exceptions/EmailAlredyUsed";
-// import { TaskNotFound } from "../exceptions/TaskNotFound";
+import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
 
 export function ErrorHandler(
 	error: unknown,
@@ -18,17 +16,9 @@ export function ErrorHandler(
 		});
 	}
 
-	// if (error instanceof UserNotFound) {
-	//     return res.status(404).json({ message: "Usuário não encontrado" });
-	// }
-
-	// if (error instanceof EmailAlreadyUsedError) {
-	//     return res.status(409).json({ message: "Email já está em uso" });
-	// }
-
-	// if (error instanceof TaskNotFound) {
-	//     return res.status(404).json({ message: "Tarefa não encontrada" });
-	// }
+	if (error instanceof CostumerNotFoundException) {
+		return res.status(404).json({ message: 'Cliente não encontrado' });
+	}
 
 	console.error(error); // log de debug
 	return res.status(500).json({ message: 'Erro no servidor' });

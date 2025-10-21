@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import { env } from './config/env';
 import { config } from './config/statusMonitor';
 import { ErrorHandler } from './middlewares/ErrorHandler';
+import CostumersRoutes from './routes/CostumersRoutes';
 
 const app = express();
 
@@ -11,15 +12,13 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(statusMonitor(config));
 
-app.use(ErrorHandler);
-
-app.get('/', (req, res) => {
-	res.send('Servidor rodando com Biome + ts-node-dev ⚡');
-});
+app.use(CostumersRoutes);
 
 app.get('/up', (req, res) => {
 	res.send('Servidor ativo');
 });
+
+app.use(ErrorHandler);
 
 app.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}`);
