@@ -5,6 +5,7 @@ import { env } from './config/env';
 import { config } from './config/statusMonitor';
 import { ErrorHandler } from './middlewares/ErrorHandler';
 import CostumersRoutes from './routes/CostumersRoutes';
+import ChargesRoutes from './routes/ChargesRoutes';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(statusMonitor(config));
 
 app.use(CostumersRoutes);
+app.use(ChargesRoutes);
 
 app.get('/up', (req, res) => {
 	res.send('Servidor ativo');

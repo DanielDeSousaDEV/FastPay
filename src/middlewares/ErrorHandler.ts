@@ -3,6 +3,7 @@ import { ZodError } from 'zod';
 import { FormatZodErrors } from '../utils/funcs/FormatZodErrors';
 import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
 import { EmailOrDocumentAlredyUsedException } from '../exceptions/EmailOrDocumentAlredyUsedException';
+import { ChargeNotFoundException } from '../exceptions/ChargeNotFoundException';
 
 export function ErrorHandler(
 	error: unknown,
@@ -19,6 +20,10 @@ export function ErrorHandler(
 
 	if (error instanceof CostumerNotFoundException) {
 		return res.status(404).json({ message: 'Cliente não encontrado' });
+	}
+
+	if (error instanceof ChargeNotFoundException) {
+		return res.status(404).json({ message: 'Combrança não encontrado' });
 	}
 
 	if (error instanceof EmailOrDocumentAlredyUsedException) {
