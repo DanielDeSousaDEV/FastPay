@@ -7,6 +7,8 @@ CREATE TABLE `Charge` (
     `dueDate` DATETIME(3) NULL,
     `installments` INTEGER NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `asaasChargeId` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Charge_asaasChargeId_key`(`asaasChargeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -20,19 +20,21 @@ model Customer {
   document  String   @unique
   createdAt DateTime @default(now())
 
-  Charges Charge[]
+  asaasCustomerId String   @unique
+  Charges         Charge[]
 }
 
 model Charge {
-  id           Int          @id @default(autoincrement())
-  amount       Float
-  paymentType  PaymentType
-  status       ChargeStatus @default(PENDING)
-  dueDate      DateTime? // só para boleto
-  installments Int? // só para cartão
-  createdAt    DateTime     @default(now())
-  Customer     Customer     @relation(fields: [customerId], references: [id])
-  customerId   Int
+  id            Int          @id @default(autoincrement())
+  amount        Float
+  paymentType   PaymentType
+  status        ChargeStatus @default(PENDING)
+  dueDate       DateTime? // só para boleto
+  installments  Int? // só para cartão
+  createdAt     DateTime     @default(now())
+  asaasChargeId String       @unique
+  Customer      Customer     @relation(fields: [customerId], references: [id])
+  customerId    Int
 }
 
 enum PaymentType {
