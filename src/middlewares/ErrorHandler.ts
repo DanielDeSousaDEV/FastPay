@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { FormatZodErrors } from '../utils/funcs/FormatZodErrors';
 import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
+import { EmailOrDocumentAlredyUsedException } from '../exceptions/EmailOrDocumentAlredyUsedException';
 
 export function ErrorHandler(
 	error: unknown,
@@ -18,6 +19,12 @@ export function ErrorHandler(
 
 	if (error instanceof CostumerNotFoundException) {
 		return res.status(404).json({ message: 'Cliente não encontrado' });
+	}
+
+	if (error instanceof EmailOrDocumentAlredyUsedException) {
+		return res
+			.status(404)
+			.json({ message: 'Email ou Documento já foram cadastrados' });
 	}
 
 	console.error(error); // log de debug
