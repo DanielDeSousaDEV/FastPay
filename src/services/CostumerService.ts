@@ -12,7 +12,7 @@ export const CostumerService = {
 	async getCostumers() {
 		const costumers = await prisma.customer.findMany({
 			omit: {
-				// asaasCustomerId: true,
+				asaasCustomerId: true,
 			},
 		});
 
