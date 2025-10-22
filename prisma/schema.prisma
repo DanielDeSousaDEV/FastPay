@@ -41,7 +41,7 @@ model Charge {
 enum PaymentType {
   PIX
   CREDIT_CARD
-  PAYMENT_SLIP
+  BOLETO
 }
 
 enum ChargeStatus {

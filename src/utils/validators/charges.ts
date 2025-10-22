@@ -30,7 +30,7 @@ const CreatePixChargeRequest = z.object({
 
 const CreatePaymentSlipChargeRequest = z.object({
 	...CreateChargeRequestBaseFields,
-	paymentType: z.literal(PaymentType.PAYMENT_SLIP),
+	paymentType: z.literal(PaymentType.BOLETO),
 });
 
 const CreateCreditCardChargeRequest = z.object({
@@ -72,7 +72,7 @@ const UpdatePixChargeRequest = z.object({
 
 const UpdatePaymentSlipChargeRequest = z.object({
 	...UpdateChargeRequestBaseFields,
-	paymentType: z.literal(PaymentType.PAYMENT_SLIP),
+	paymentType: z.literal(PaymentType.BOLETO),
 });
 
 const UpdateCreditCardChargeRequest = z.object({
