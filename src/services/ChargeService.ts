@@ -1,13 +1,16 @@
-import type { AsaasCustomer } from '../@types/assas/Costumer';
+import { PaymentType } from '@prisma/client';
+import type { AsaasCustomer } from '../@types/asaas/Costumer';
 import { paymentGateway } from '../config/paymentGatewayApi';
 import { ChargeNotFoundException } from '../exceptions/ChargeNotFoundException';
 import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
 import { EmailOrDocumentAlredyUsedException } from '../exceptions/EmailOrDocumentAlredyUsedException';
 import { prisma } from '../lib/prisma';
+import { CreateChargeRequest } from '../utils/validators/charges';
 import type {
 	CreateCostumerRequest,
 	UpdateCostumerRequest,
 } from '../utils/validators/costumers';
+import { AsaasCharge } from '../@types/asaas/Charge';
 
 export const ChargeService = {
 	async getCharges() {
@@ -37,40 +40,43 @@ export const ChargeService = {
 		return charge;
 	},
 
-	// async createCostumer(costumeData: CreateCostumerRequest) {
-	// 	const emailAlredyUses = await prisma.customer.findUnique({
-	// 		where: {
-	// 			email: costumeData.email,
-	// 		},
-	// 	});
+	async createCharge(chargeData: CreateChargeRequest) {
+		const costumer = await prisma.customer.findUnique({
+			where: {
+				id: chargeData.customerId,
+			},
+		});
 
-	// 	if (emailAlredyUses) {
-	// 		throw new EmailOrDocumentAlredyUsedException();
-	// 	}
+		if (!costumer) {
+			throw new CostumerNotFoundException();
+		}
 
-	// 	const assasCostumer = await paymentGateway.post<AsaasCustomer>(
-	// 		'/customers',
-	// 		{
-	// 			name: costumeData.name,
-	// 			cpfCnpj: costumeData.document,
-	// 			email: costumeData.email,
-	// 		},
-	// 	);
+		const asaasCharge = await paymentGateway.post<AsaasCharge>('/payments', {
+			customer: costumer.asaasCustomerId,
+			billingType: chargeData.paymentType,
+			value: chargeData.amount,
+			dueDate: chargeData.dueDate,
+		});
 
-	// 	const costumer = await prisma.customer.create({
-	// 		data: {
-	// 			name: costumeData.name,
-	// 			email: costumeData.email,
-	// 			document: costumeData.document,
-	// 			asaasCustomerId: assasCostumer.data.id,
-	// 		},
-	// 		omit: {
-	// 			asaasCustomerId: true,
-	// 		},
-	// 	});
+		const charge = await prisma.charge.create({
+			data: {
+				amount: chargeData.amount,
+				currency: chargeData.currency,
+				paymentType: chargeData.paymentType,
+				asaasChargeId: asaasCharge.data.id,
+				dueDate: new Date(chargeData.dueDate),
+				customerId: costumer.id,
+				...(chargeData.paymentType === PaymentType.CREDIT_CARD && {
+					installments: chargeData.installments,
+				}),
+			},
+			omit: {
+				asaasChargeId: true,
+			},
+		});
 
-	// 	return costumer;
-	// },
+		return charge;
+	},
 
 	// async updateCostumer(costumerId: number, costumeData: UpdateCostumerRequest) {
 	// 	const costumerExists = await prisma.customer.findUnique({

@@ -27,9 +27,10 @@ model Customer {
 model Charge {
   id            Int          @id @default(autoincrement())
   amount        Float
+  currency      String
   paymentType   PaymentType
   status        ChargeStatus @default(PENDING)
-  dueDate       DateTime? // só para boleto
+  dueDate       DateTime
   installments  Int? // só para cartão
   createdAt     DateTime     @default(now())
   asaasChargeId String       @unique

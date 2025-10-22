@@ -5,6 +5,7 @@ import {
 	UpdateCostumerRequest,
 } from '../utils/validators/costumers';
 import { ChargeService } from '../services/ChargeService';
+import { CreateChargeRequest } from '../utils/validators/charges';
 
 export const ChargeController = {
 	async index(req: Request, res: Response) {
@@ -27,16 +28,16 @@ export const ChargeController = {
 		});
 	},
 
-	// async create(req: Request, res: Response) {
-	// 	const costumerData = CreateCostumerRequest.parse(req.body);
+	async create(req: Request, res: Response) {
+		const chargeData = CreateChargeRequest.parse(req.body);
 
-	// 	const costumer = await CostumerService.createCostumer(costumerData);
+		const charge = await ChargeService.createCharge(chargeData);
 
-	// 	return res.json({
-	// 		message: 'Cliente criado com sucesso',
-	// 		costumer,
-	// 	});
-	// },
+		return res.json({
+			message: 'Combrança criada com sucesso',
+			charge,
+		});
+	},
 
 	// async update(req: Request, res: Response) {
 	// 	const costumerData = UpdateCostumerRequest.parse(req.body);
