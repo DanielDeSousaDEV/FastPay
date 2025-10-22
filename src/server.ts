@@ -16,7 +16,7 @@ app.use(statusMonitor(config));
 app.use(CostumersRoutes);
 app.use(ChargesRoutes);
 
-app.get('/up', (req, res) => {
+app.get('/up', (_req, res) => {
 	res.send('Servidor ativo');
 });
 

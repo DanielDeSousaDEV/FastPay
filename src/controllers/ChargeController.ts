@@ -8,7 +8,7 @@ import {
 } from '../utils/validators/charges';
 
 export const ChargeController = {
-	async index(req: Request, res: Response) {
+	async index(_req: Request, res: Response) {
 		const charges = await ChargeService.getCharges();
 
 		return res.json({

@@ -7,7 +7,7 @@ import {
 } from '../utils/validators/costumers';
 
 export const CostumerController = {
-	async index(req: Request, res: Response) {
+	async index(_req: Request, res: Response) {
 		const costumers = await CostumerService.getCostumers();
 
 		return res.json({
