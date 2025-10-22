@@ -1,4 +1,4 @@
-import type { AsaasCustomer } from '../@types/assas/Costumer';
+import type { AsaasCustomer } from '../@types/asaas/Costumer';
 import { paymentGateway } from '../config/paymentGatewayApi';
 import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
 import { EmailOrDocumentAlredyUsedException } from '../exceptions/EmailOrDocumentAlredyUsedException';
@@ -47,7 +47,7 @@ export const CostumerService = {
 			throw new EmailOrDocumentAlredyUsedException();
 		}
 
-		const assasCostumer = await paymentGateway.post<AsaasCustomer>(
+		const asaasCostumer = await paymentGateway.post<AsaasCustomer>(
 			'/customers',
 			{
 				name: costumeData.name,
@@ -61,7 +61,7 @@ export const CostumerService = {
 				name: costumeData.name,
 				email: costumeData.email,
 				document: costumeData.document,
-				asaasCustomerId: assasCostumer.data.id,
+				asaasCustomerId: asaasCostumer.data.id,
 			},
 			omit: {
 				asaasCustomerId: true,
