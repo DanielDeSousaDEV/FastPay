@@ -68,6 +68,7 @@ export const ChargeService = {
 				asaasChargeId: asaasCharge.data.id,
 				dueDate: new Date(chargeData.dueDate),
 				customerId: costumer.id,
+				invoiceUrl: asaasCharge.data.invoiceUrl,
 				...(chargeData.paymentType === PaymentType.CREDIT_CARD && {
 					installments: chargeData.installments,
 				}),

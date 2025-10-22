@@ -32,6 +32,7 @@ model Charge {
   status        ChargeStatus @default(PENDING)
   dueDate       DateTime
   installments  Int? // só para cartão
+  invoiceUrl    String
   createdAt     DateTime     @default(now())
   asaasChargeId String       @unique
   Customer      Customer     @relation(fields: [customerId], references: [id])
