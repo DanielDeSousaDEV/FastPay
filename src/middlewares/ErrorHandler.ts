@@ -25,13 +25,13 @@ export function ErrorHandler(
 	}
 
 	if (error instanceof ChargeNotFoundException) {
-		return res.status(404).json({ message: 'Combrança não encontrado' });
+		return res.status(404).json({ message: 'Cobrança não encontrado' });
 	}
 
 	if (error instanceof ChargeNotCanUpdated) {
 		return res
 			.status(403)
-			.json({ message: 'Combranças com parcelas não podem ser atualizadas' });
+			.json({ message: 'Cobranças com parcelas não podem ser atualizadas' });
 	}
 
 	if (error instanceof EmailOrDocumentAlredyUsedException) {

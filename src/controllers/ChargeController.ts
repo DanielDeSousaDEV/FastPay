@@ -12,7 +12,7 @@ export const ChargeController = {
 		const charges = await ChargeService.getCharges();
 
 		return res.json({
-			message: 'Combranças carregadas com sucesso',
+			message: 'Cobranças carregadas com sucesso',
 			charges,
 		});
 	},
@@ -23,7 +23,7 @@ export const ChargeController = {
 		const charge = await ChargeService.getCharge(id);
 
 		return res.json({
-			message: 'Combrança carregada com sucesso',
+			message: 'Cobrança carregada com sucesso (incluindo suas Cobranças)',
 			charge,
 		});
 	},
@@ -34,7 +34,7 @@ export const ChargeController = {
 		const charge = await ChargeService.createCharge(chargeData);
 
 		return res.json({
-			message: 'Combrança criada com sucesso',
+			message: 'Cobrança criada com sucesso',
 			charge,
 		});
 	},
@@ -46,7 +46,7 @@ export const ChargeController = {
 		const charge = await ChargeService.updateCharge(chargerId, chargeData);
 
 		return res.json({
-			message: 'Combrança atualizada com sucesso',
+			message: 'Cobrança atualizada com sucesso',
 			charge,
 		});
 	},
@@ -57,7 +57,7 @@ export const ChargeController = {
 		const charge = await ChargeService.deleteCharge(chargeId);
 
 		return res.json({
-			message: 'Combrança deletada com sucesso',
+			message: 'Cobrança deletada com sucesso',
 			charge,
 		});
 	},

@@ -3,24 +3,24 @@ import { PaymentType } from '@prisma/client';
 
 export const ChargeIdSchema = z.object({
 	id: z.coerce
-		.number('Por favor informe o id da combrança')
-		.int('Por favor informe o id da combrança')
-		.min(1, 'Por favor informe o id da combrança')
+		.number('Por favor informe o id da Cobrança')
+		.int('Por favor informe o id da Cobrança')
+		.min(1, 'Por favor informe o id da Cobrança')
 		.positive('Por favor informe o id valído'),
 });
 
 const CreateChargeRequestBaseFields = {
 	amount: z
-		.number('Por favor informe o valor da combrança')
-		.positive('Por favor informe o valor da combrança'),
+		.number('Por favor informe o valor da Cobrança')
+		.positive('Por favor informe o valor da Cobrança'),
 	currency: z
-		.string('Por favor informe a moeda da combrança')
-		.min(1, 'Por favor informe a moeda da combrança')
-		.max(255, 'A moeda da combrança deve ter no máximo 255 caracteres'),
+		.string('Por favor informe a moeda da Cobrança')
+		.min(1, 'Por favor informe a moeda da Cobrança')
+		.max(255, 'A moeda da Cobrança deve ter no máximo 255 caracteres'),
 	customerId: z
-		.int('Por favor informe cliente da combrança')
-		.positive('Por favor informe cliente da combrança'),
-	dueDate: z.iso.date('Por favor informe a data de validade da combrança'),
+		.int('Por favor informe cliente da Cobrança')
+		.positive('Por favor informe cliente da Cobrança'),
+	dueDate: z.iso.date('Por favor informe a data de validade da Cobrança'),
 };
 
 const CreatePixChargeRequest = z.object({
@@ -54,13 +54,13 @@ export type CreateChargeRequest = z.infer<typeof CreateChargeRequest>;
 
 const UpdateChargeRequestBaseFields = {
 	amount: z
-		.number('Por favor informe o valor da combrança')
-		.positive('Por favor informe o valor da combrança'),
+		.number('Por favor informe o valor da Cobrança')
+		.positive('Por favor informe o valor da Cobrança'),
 	currency: z
-		.string('Por favor informe a moeda da combrança')
-		.min(1, 'Por favor informe a moeda da combrança')
-		.max(255, 'A moeda da combrança deve ter no máximo 255 caracteres'),
-	dueDate: z.iso.date('Por favor informe a data de validade da combrança'),
+		.string('Por favor informe a moeda da Cobrança')
+		.min(1, 'Por favor informe a moeda da Cobrança')
+		.max(255, 'A moeda da Cobrança deve ter no máximo 255 caracteres'),
+	dueDate: z.iso.date('Por favor informe a data de validade da Cobrança'),
 };
 
 const UpdatePixChargeRequest = z.object({
