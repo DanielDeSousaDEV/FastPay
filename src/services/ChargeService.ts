@@ -5,7 +5,10 @@ import { ChargeNotFoundException } from '../exceptions/ChargeNotFoundException';
 import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
 import { EmailOrDocumentAlredyUsedException } from '../exceptions/EmailOrDocumentAlredyUsedException';
 import { prisma } from '../lib/prisma';
-import { CreateChargeRequest } from '../utils/validators/charges';
+import {
+	CreateChargeRequest,
+	UpdateChargeRequest,
+} from '../utils/validators/charges';
 import type {
 	CreateCostumerRequest,
 	UpdateCostumerRequest,
@@ -56,6 +59,10 @@ export const ChargeService = {
 			billingType: chargeData.paymentType,
 			value: chargeData.amount,
 			dueDate: chargeData.dueDate,
+			...(chargeData.paymentType === PaymentType.CREDIT_CARD && {
+				installmentCount: chargeData.installments,
+				totalValue: chargeData.amount,
+			}),
 		});
 
 		const charge = await prisma.charge.create({
@@ -78,33 +85,20 @@ export const ChargeService = {
 		return charge;
 	},
 
-	// async updateCostumer(costumerId: number, costumeData: UpdateCostumerRequest) {
-	// 	const costumerExists = await prisma.customer.findUnique({
+	// async updateCharge(chargeId: number, chargeData: UpdateChargeRequest) {
+	// 	const chargeExists = await prisma.charge.findUnique({
 	// 		where: {
-	// 			id: costumerId,
+	// 			id: chargeId,
 	// 		},
 	// 	});
 
-	// 	if (!costumerExists) {
-	// 		throw new CostumerNotFoundException();
+	// 	if (!chargeExists) {
+	// 		throw new ChargeNotFoundException();
 	// 	}
 
-	// 	const emailOrDocumentAlredyUses = await prisma.customer.findFirst({
+	// 	const costumer = await prisma.charge.update({
 	// 		where: {
-	// 			OR: [{ email: costumeData.email }, { document: costumeData.document }],
-	// 			NOT: {
-	// 				id: costumerId,
-	// 			},
-	// 		},
-	// 	});
-
-	// 	if (emailOrDocumentAlredyUses) {
-	// 		throw new EmailOrDocumentAlredyUsedException();
-	// 	}
-
-	// 	const costumer = await prisma.customer.update({
-	// 		where: {
-	// 			id: costumerId,
+	// 			id: chargeId,
 	// 		},
 	// 		data: {
 	// 			name: costumeData.name,
