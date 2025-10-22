@@ -1,9 +1,5 @@
 import type { Request, Response } from 'express';
-import {
-	CostumerIdSchema,
-	CreateCostumerRequest,
-	UpdateCostumerRequest,
-} from '../utils/validators/costumers';
+import { CostumerIdSchema } from '../utils/validators/costumers';
 import { ChargeService } from '../services/ChargeService';
 import {
 	ChargeIdSchema,
@@ -55,14 +51,14 @@ export const ChargeController = {
 		});
 	},
 
-	// async delete(req: Request, res: Response) {
-	// 	const { id: costumerId } = CostumerIdSchema.parse(req.params);
+	async delete(req: Request, res: Response) {
+		const { id: chargeId } = ChargeIdSchema.parse(req.params);
 
-	// 	const costumer = await CostumerService.deleteCostumer(costumerId);
+		const charge = await ChargeService.deleteCharge(chargeId);
 
-	// 	return res.json({
-	// 		message: 'Cliente deletado com sucesso',
-	// 		costumer,
-	// 	});
-	// },
+		return res.json({
+			message: 'Combrança deletada com sucesso',
+			charge,
+		});
+	},
 };

@@ -1,19 +1,13 @@
 import { PaymentType } from '@prisma/client';
-import type { AsaasCustomer } from '../@types/asaas/Costumer';
 import { paymentGateway } from '../config/paymentGatewayApi';
 import { ChargeNotFoundException } from '../exceptions/ChargeNotFoundException';
 import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
-import { EmailOrDocumentAlredyUsedException } from '../exceptions/EmailOrDocumentAlredyUsedException';
 import { prisma } from '../lib/prisma';
-import {
+import type {
 	CreateChargeRequest,
 	UpdateChargeRequest,
 } from '../utils/validators/charges';
-import type {
-	CreateCostumerRequest,
-	UpdateCostumerRequest,
-} from '../utils/validators/costumers';
-import { AsaasCharge } from '../@types/asaas/Charge';
+import type { AsaasCharge } from '../@types/asaas/Charge';
 import { ChargeNotCanUpdated } from '../exceptions/ChargeNotCanUpdated';
 
 export const ChargeService = {
@@ -124,21 +118,21 @@ export const ChargeService = {
 		return safeData;
 	},
 
-	// async deleteCostumer(id: number) {
-	// 	const costumer = await prisma.customer.delete({
-	// 		where: {
-	// 			id,
-	// 		},
-	// 	});
+	async deleteCharge(id: number) {
+		const charge = await prisma.charge.delete({
+			where: {
+				id,
+			},
+		});
 
-	// 	if (!costumer) {
-	// 		throw new CostumerNotFoundException();
-	// 	}
+		if (!charge) {
+			throw new ChargeNotFoundException();
+		}
 
-	// 	await paymentGateway.delete(`/customers/${costumer.asaasCustomerId}`);
+		await paymentGateway.delete(`/payments/${charge.asaasChargeId}`);
 
-	// 	const { asaasCustomerId, ...safeData } = costumer;
+		const { asaasChargeId, ...safeData } = charge;
 
-	// 	return safeData;
-	// },
+		return safeData;
+	},
 };
