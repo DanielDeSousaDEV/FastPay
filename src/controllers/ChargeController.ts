@@ -5,7 +5,11 @@ import {
 	UpdateCostumerRequest,
 } from '../utils/validators/costumers';
 import { ChargeService } from '../services/ChargeService';
-import { CreateChargeRequest } from '../utils/validators/charges';
+import {
+	ChargeIdSchema,
+	CreateChargeRequest,
+	UpdateChargeRequest,
+} from '../utils/validators/charges';
 
 export const ChargeController = {
 	async index(req: Request, res: Response) {
@@ -39,20 +43,17 @@ export const ChargeController = {
 		});
 	},
 
-	// async update(req: Request, res: Response) {
-	// 	const costumerData = UpdateCostumerRequest.parse(req.body);
-	// 	const { id: costumerId } = CostumerIdSchema.parse(req.params);
+	async update(req: Request, res: Response) {
+		const chargeData = UpdateChargeRequest.parse(req.body);
+		const { id: chargerId } = ChargeIdSchema.parse(req.params);
 
-	// 	const costumer = await CostumerService.updateCostumer(
-	// 		costumerId,
-	// 		costumerData,
-	// 	);
+		const charge = await ChargeService.updateCharge(chargerId, chargeData);
 
-	// 	return res.json({
-	// 		message: 'Cliente atualizado com sucesso',
-	// 		costumer,
-	// 	});
-	// },
+		return res.json({
+			message: 'Combrança atualizada com sucesso',
+			charge,
+		});
+	},
 
 	// async delete(req: Request, res: Response) {
 	// 	const { id: costumerId } = CostumerIdSchema.parse(req.params);

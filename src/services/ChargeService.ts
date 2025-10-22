@@ -14,6 +14,7 @@ import type {
 	UpdateCostumerRequest,
 } from '../utils/validators/costumers';
 import { AsaasCharge } from '../@types/asaas/Charge';
+import { ChargeNotCanUpdated } from '../exceptions/ChargeNotCanUpdated';
 
 export const ChargeService = {
 	async getCharges() {
@@ -85,38 +86,43 @@ export const ChargeService = {
 		return charge;
 	},
 
-	// async updateCharge(chargeId: number, chargeData: UpdateChargeRequest) {
-	// 	const chargeExists = await prisma.charge.findUnique({
-	// 		where: {
-	// 			id: chargeId,
-	// 		},
-	// 	});
+	async updateCharge(chargeId: number, chargeData: UpdateChargeRequest) {
+		const chargeExists = await prisma.charge.findUnique({
+			where: {
+				id: chargeId,
+			},
+		});
 
-	// 	if (!chargeExists) {
-	// 		throw new ChargeNotFoundException();
-	// 	}
+		if (!chargeExists) {
+			throw new ChargeNotFoundException();
+		}
 
-	// 	const costumer = await prisma.charge.update({
-	// 		where: {
-	// 			id: chargeId,
-	// 		},
-	// 		data: {
-	// 			name: costumeData.name,
-	// 			email: costumeData.email,
-	// 			document: costumeData.document,
-	// 		},
-	// 	});
+		if (chargeExists.installments) {
+			throw new ChargeNotCanUpdated();
+		}
 
-	// 	await paymentGateway.put(`/customers/${costumer.asaasCustomerId}`, {
-	// 		name: costumeData.name,
-	// 		cpfCnpj: costumeData.document,
-	// 		email: costumeData.email,
-	// 	});
+		const charge = await prisma.charge.update({
+			where: {
+				id: chargeId,
+			},
+			data: {
+				amount: chargeData.amount,
+				currency: chargeData.currency,
+				paymentType: chargeData.paymentType,
+				dueDate: new Date(chargeData.dueDate),
+			},
+		});
 
-	// 	const { asaasCustomerId, ...safeData } = costumer;
+		await paymentGateway.put(`/payments/${charge.asaasChargeId}`, {
+			billingType: chargeData.paymentType,
+			value: chargeData.amount,
+			dueDate: chargeData.dueDate,
+		});
 
-	// 	return safeData;
-	// },
+		const { asaasChargeId, ...safeData } = charge;
+
+		return safeData;
+	},
 
 	// async deleteCostumer(id: number) {
 	// 	const costumer = await prisma.customer.delete({

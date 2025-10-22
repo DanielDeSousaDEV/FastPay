@@ -5,6 +5,7 @@ import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundExcepti
 import { EmailOrDocumentAlredyUsedException } from '../exceptions/EmailOrDocumentAlredyUsedException';
 import { ChargeNotFoundException } from '../exceptions/ChargeNotFoundException';
 import { AxiosError } from 'axios';
+import { ChargeNotCanUpdated } from '../exceptions/ChargeNotCanUpdated';
 
 export function ErrorHandler(
 	error: unknown,
@@ -27,6 +28,12 @@ export function ErrorHandler(
 		return res.status(404).json({ message: 'Combrança não encontrado' });
 	}
 
+	if (error instanceof ChargeNotCanUpdated) {
+		return res
+			.status(403)
+			.json({ message: 'Combranças com parcelas não podem ser atualizadas' });
+	}
+
 	if (error instanceof EmailOrDocumentAlredyUsedException) {
 		return res
 			.status(404)
@@ -38,6 +45,7 @@ export function ErrorHandler(
 			.status(404)
 			.json({ message: 'Email ou Documento já foram cadastrados' });
 	}
+
 	if (error instanceof AxiosError) {
 		console.log(error.response?.data);
 

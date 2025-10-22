@@ -51,6 +51,7 @@ export const CreateChargeRequest = z.discriminatedUnion(
 	'Informe um metodo de pagamento valído',
 );
 export type CreateChargeRequest = z.infer<typeof CreateChargeRequest>;
+
 const UpdateChargeRequestBaseFields = {
 	amount: z
 		.number('Por favor informe o valor da combrança')
@@ -59,9 +60,6 @@ const UpdateChargeRequestBaseFields = {
 		.string('Por favor informe a moeda da combrança')
 		.min(1, 'Por favor informe a moeda da combrança')
 		.max(255, 'A moeda da combrança deve ter no máximo 255 caracteres'),
-	customerId: z
-		.int('Por favor informe cliente da combrança')
-		.positive('Por favor informe cliente da combrança'),
 	dueDate: z.iso.date('Por favor informe a data de validade da combrança'),
 };
 
@@ -78,9 +76,6 @@ const UpdatePaymentSlipChargeRequest = z.object({
 const UpdateCreditCardChargeRequest = z.object({
 	...UpdateChargeRequestBaseFields,
 	paymentType: z.literal(PaymentType.CREDIT_CARD),
-	installments: z
-		.int('A quantidade de parcelas deve ser um número')
-		.positive('A quantidade de parcelas deve ser um número positivo'),
 });
 
 export const UpdateChargeRequest = z.discriminatedUnion(
