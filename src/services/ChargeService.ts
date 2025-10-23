@@ -136,7 +136,17 @@ export const ChargeService = {
 			},
 		});
 
-		await paymentGateway.delete(`/payments/${charge.asaasChargeId}`);
+		const asaasCharge = await paymentGateway.get<AsaasCharge>(
+			`/payments/${charge.asaasChargeId}`,
+		);
+
+		if (asaasCharge.data.installment) {
+			await paymentGateway.delete(
+				`/installments/${asaasCharge.data.installment}`,
+			);
+		} else {
+			await paymentGateway.delete(`/payments/${charge.asaasChargeId}`);
+		}
 
 		const { asaasChargeId, ...safeData } = charge;
 

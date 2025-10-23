@@ -20,6 +20,7 @@ export interface AsaasCharge {
 	paymentDate: string | null;
 	clientPaymentDate: string | null;
 	installmentNumber: number | null;
+	installment: string | null;
 	invoiceUrl: string;
 	invoiceNumber: string;
 	externalReference: string | null;
