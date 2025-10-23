@@ -118,17 +118,34 @@ export const CostumerService = {
 	},
 
 	async deleteCostumer(id: number) {
+		const costumerExists = await prisma.customer.findUnique({
+			where: {
+				id,
+			},
+		});
+
+		if (!costumerExists) {
+			throw new CostumerNotFoundException();
+		}
+
 		const costumer = await prisma.customer.delete({
 			where: {
 				id,
 			},
 		});
 
-		if (!costumer) {
-			throw new CostumerNotFoundException();
-		}
-
 		await paymentGateway.delete(`/customers/${costumer.asaasCustomerId}`);
+
+		const charges = await prisma.charge.findMany({
+			where: {
+				customerId: id,
+			},
+		});
+
+		charges.map(
+			async (charge) =>
+				await paymentGateway.delete(`/payments/${charge.asaasChargeId}}`),
+		);
 
 		const { asaasCustomerId, ...safeData } = costumer;
 

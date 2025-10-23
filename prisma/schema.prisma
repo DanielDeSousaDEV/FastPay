@@ -35,7 +35,7 @@ model Charge {
   invoiceUrl    String
   createdAt     DateTime     @default(now())
   asaasChargeId String       @unique
-  Customer      Customer     @relation(fields: [customerId], references: [id])
+  Customer      Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId    Int
 }
 

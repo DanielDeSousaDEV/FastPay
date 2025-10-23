@@ -120,15 +120,21 @@ export const ChargeService = {
 	},
 
 	async deleteCharge(id: number) {
-		const charge = await prisma.charge.delete({
+		const chargeExists = await prisma.charge.findUnique({
 			where: {
 				id,
 			},
 		});
 
-		if (!charge) {
+		if (!chargeExists) {
 			throw new ChargeNotFoundException();
 		}
+
+		const charge = await prisma.charge.delete({
+			where: {
+				id,
+			},
+		});
 
 		await paymentGateway.delete(`/payments/${charge.asaasChargeId}`);
 
