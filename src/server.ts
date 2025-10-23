@@ -6,6 +6,7 @@ import { config } from './config/statusMonitor';
 import { ErrorHandler } from './middlewares/ErrorHandler';
 import CostumersRoutes from './routes/CostumersRoutes';
 import ChargesRoutes from './routes/ChargesRoutes';
+import WebhookRoutes from './routes/WebhookRoutes';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(statusMonitor(config));
 
 app.use(CostumersRoutes);
 app.use(ChargesRoutes);
+app.use(WebhookRoutes);
 
 app.get('/up', (_req, res) => {
 	res.send('Servidor ativo');
