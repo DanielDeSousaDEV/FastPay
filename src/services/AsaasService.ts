@@ -26,6 +26,15 @@ export const AsaasService = {
 		})
 
 		if (chargeAlredyCreated) {
+			await prisma.charge.update({
+				where: {
+					asaasChargeId: chargeData.id
+				},
+				data: {
+					amount: chargeData.value,
+				}
+			})
+
 			return chargeAlredyCreated;
 		}
 
