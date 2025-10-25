@@ -22,6 +22,16 @@ export const AsaasService = {
 			throw new CostumerNotFoundException();
 		}
 
+		const chargeAlredyCreated = await prisma.charge.findUnique({
+			where: {
+				asaasChargeId: chargeData.id
+			}
+		})
+
+		if (chargeAlredyCreated) {
+			return chargeAlredyCreated;
+		}
+
 		const charge = await prisma.charge.create({
 			data: {
 				amount: chargeData.value,
@@ -33,6 +43,10 @@ export const AsaasService = {
 				invoiceUrl: chargeData.invoiceUrl,
 				...(chargeData.billingType === PaymentType.CREDIT_CARD && {
 					installments: chargeData.installmentNumber,
+
+					...(chargeData.installmentNumber && {
+						asaasInstallmentId: chargeData.installment
+					})
 				}),
 			},
 			omit: {
@@ -76,9 +90,7 @@ export const AsaasService = {
 			dueDate: chargeData.dueDate,
 		});
 
-		const { asaasChargeId, ...safeData } = charge;
-
-		return safeData;
+		return charge;
 	},
 
 	async deleteCharge(id: number) {
@@ -110,8 +122,6 @@ export const AsaasService = {
 			await paymentGateway.delete(`/payments/${charge.asaasChargeId}`);
 		}
 
-		const { asaasChargeId, ...safeData } = charge;
-
-		return safeData;
+		return charge;
 	},
 };

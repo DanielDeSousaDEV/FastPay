@@ -25,18 +25,19 @@ model Customer {
 }
 
 model Charge {
-  id            Int          @id @default(autoincrement())
-  amount        Float
-  currency      String
-  paymentType   PaymentType
-  status        ChargeStatus @default(PENDING)
-  dueDate       DateTime
-  installments  Int? // só para cartão
-  invoiceUrl    String
-  createdAt     DateTime     @default(now())
-  asaasChargeId String       @unique
-  Customer      Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  customerId    Int
+  id                 Int          @id @default(autoincrement())
+  amount             Float
+  currency           String
+  paymentType        PaymentType
+  status             ChargeStatus @default(PENDING)
+  dueDate            DateTime
+  installments       Int? // só para cartão
+  asaasInstallmentId String? // só para cartão com mais de uma parcela
+  invoiceUrl         String
+  createdAt          DateTime     @default(now())
+  asaasChargeId      String       @unique
+  Customer           Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId         Int
 }
 
 enum PaymentType {

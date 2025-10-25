@@ -15,6 +15,7 @@ export const ChargeService = {
 		const charges = await prisma.charge.findMany({
 			omit: {
 				asaasChargeId: true,
+				asaasInstallmentId: true
 			},
 		});
 
@@ -28,6 +29,7 @@ export const ChargeService = {
 			},
 			omit: {
 				asaasChargeId: true,
+				asaasInstallmentId: true,
 			},
 		});
 
@@ -71,10 +73,15 @@ export const ChargeService = {
 				invoiceUrl: asaasCharge.data.invoiceUrl,
 				...(chargeData.paymentType === PaymentType.CREDIT_CARD && {
 					installments: chargeData.installments,
+
+					...(chargeData.installments > 1 && {
+						asaasInstallmentId: asaasCharge.data.installment
+					})
 				}),
 			},
 			omit: {
 				asaasChargeId: true,
+				asaasInstallmentId: true,
 			},
 		});
 
@@ -114,7 +121,7 @@ export const ChargeService = {
 			dueDate: chargeData.dueDate,
 		});
 
-		const { asaasChargeId, ...safeData } = charge;
+		const { asaasChargeId, asaasInstallmentId, ...safeData } = charge;
 
 		return safeData;
 	},
@@ -136,19 +143,15 @@ export const ChargeService = {
 			},
 		});
 
-		const asaasCharge = await paymentGateway.get<AsaasCharge>(
-			`/payments/${charge.asaasChargeId}`,
-		);
-
-		if (asaasCharge.data.installment) {
+		if (charge.installments && charge.installments > 1) {
 			await paymentGateway.delete(
-				`/installments/${asaasCharge.data.installment}`,
+				`/installments/${charge.asaasInstallmentId}`,
 			);
 		} else {
 			await paymentGateway.delete(`/payments/${charge.asaasChargeId}`);
 		}
 
-		const { asaasChargeId, ...safeData } = charge;
+		const { asaasChargeId, asaasInstallmentId, ...safeData } = charge;
 
 		return safeData;
 	},
