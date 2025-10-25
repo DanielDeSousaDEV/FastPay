@@ -1,4 +1,4 @@
-import { PaymentType } from '@prisma/client';
+import { ChargeStatus, PaymentType } from '@prisma/client';
 import { paymentGateway } from '../config/paymentGatewayApi';
 import { ChargeNotFoundException } from '../exceptions/ChargeNotFoundException';
 import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
@@ -9,6 +9,7 @@ import type {
 } from '../utils/validators/charges';
 import type { AsaasCharge } from '../@types/asaas/Charge';
 import { ChargeNotCanUpdated } from '../exceptions/ChargeNotCanUpdated';
+import { AsaasBill } from '../@types/asaas/Bill';
 
 export const AsaasService = {
 	async createCharge(chargeData: AsaasCharge) {
@@ -55,6 +56,63 @@ export const AsaasService = {
 		});
 
 		return charge;
+	},
+
+	async receivePayment(chargeData: AsaasCharge) {
+		const charge = await prisma.charge.findUnique({
+			where: {
+				asaasChargeId: chargeData.id,
+			},
+		});
+
+		if (!charge) {
+			throw new ChargeNotFoundException();
+		}
+
+		const updatedCharge = await prisma.charge.update({
+			where: {asaasChargeId: chargeData.id},
+			data: {status: ChargeStatus.PAID}
+		})
+
+		return updatedCharge;
+	},
+
+	async overduePayment(chargeData: AsaasCharge) {
+		const charge = await prisma.charge.findUnique({
+			where: {
+				asaasChargeId: chargeData.id,
+			},
+		});
+
+		if (!charge) {
+			throw new ChargeNotFoundException();
+		}
+
+		const updatedCharge = await prisma.charge.update({
+			where: {asaasChargeId: chargeData.id},
+			data: {status: ChargeStatus.EXPIRED}
+		})
+
+		return updatedCharge;
+	},
+
+	async failedPayment(chargeData: AsaasCharge) {
+		const charge = await prisma.charge.findUnique({
+			where: {
+				asaasChargeId: chargeData.id,
+			},
+		});
+
+		if (!charge) {
+			throw new ChargeNotFoundException();
+		}
+
+		const updatedCharge = await prisma.charge.update({
+			where: {asaasChargeId: chargeData.id},
+			data: {status: ChargeStatus.FAILED}
+		})
+
+		return updatedCharge;
 	},
 
 	async updateCharge(chargeId: number, chargeData: UpdateChargeRequest) {

@@ -1,11 +1,4 @@
 import type { Request, Response } from 'express';
-import { CostumerIdSchema } from '../utils/validators/costumers';
-import { ChargeService } from '../services/ChargeService';
-import {
-	ChargeIdSchema,
-	CreateChargeRequest,
-	UpdateChargeRequest,
-} from '../utils/validators/charges';
 import { asaasWebhookSchema } from '../utils/validators/asaasWebhooks';
 import { AsaasService } from '../services/AsaasService';
 
@@ -21,7 +14,22 @@ export const AsaasWebhookController = {
 			}
 			case 'PAYMENT_RECEIVED': {
 				const payment = body.payment;
-				// receivePayment(payment);
+				AsaasService.receivePayment(payment);
+				break;
+			}
+			case 'PAYMENT_OVERDUE': {
+				const payment = body.payment;
+				AsaasService.overduePayment(payment);
+				break;
+			}
+			case 'PAYMENT_CREDIT_CARD_CAPTURE_REFUSED': {
+				const payment = body.payment;
+				AsaasService.failedPayment(payment);
+				break;
+			}
+			case 'PAYMENT_REPROVED_BY_RISK_ANALYSIS': {
+				const payment = body.payment;
+				AsaasService.failedPayment(payment);
 				break;
 			}
 			default: {
