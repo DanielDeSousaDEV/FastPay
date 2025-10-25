@@ -9,7 +9,6 @@ import type {
 } from '../utils/validators/charges';
 import type { AsaasCharge } from '../@types/asaas/Charge';
 import { ChargeNotCanUpdated } from '../exceptions/ChargeNotCanUpdated';
-import { AsaasBill } from '../@types/asaas/Bill';
 
 export const AsaasService = {
 	async createCharge(chargeData: AsaasCharge) {
@@ -115,10 +114,10 @@ export const AsaasService = {
 		return updatedCharge;
 	},
 
-	async updateCharge(chargeId: number, chargeData: UpdateChargeRequest) {
+	async updateCharge(chargeData: AsaasCharge) {
 		const chargeExists = await prisma.charge.findUnique({
 			where: {
-				id: chargeId,
+				asaasChargeId: chargeData.id,
 			},
 		});
 
@@ -132,29 +131,23 @@ export const AsaasService = {
 
 		const charge = await prisma.charge.update({
 			where: {
-				id: chargeId,
+				asaasChargeId: chargeData.id,
 			},
 			data: {
-				amount: chargeData.amount,
-				currency: chargeData.currency,
-				paymentType: chargeData.paymentType,
+				amount: chargeData.value,
+				currency: 'BRL',
+				paymentType: chargeData.billingType,
 				dueDate: new Date(chargeData.dueDate),
 			},
-		});
-
-		await paymentGateway.put(`/payments/${charge.asaasChargeId}`, {
-			billingType: chargeData.paymentType,
-			value: chargeData.amount,
-			dueDate: chargeData.dueDate,
 		});
 
 		return charge;
 	},
 
-	async deleteCharge(id: number) {
+	async deleteCharge(chargeData: AsaasCharge) {
 		const chargeExists = await prisma.charge.findUnique({
 			where: {
-				id,
+				asaasChargeId: chargeData.id,
 			},
 		});
 
@@ -164,20 +157,14 @@ export const AsaasService = {
 
 		const charge = await prisma.charge.delete({
 			where: {
-				id,
+				asaasChargeId: chargeData.id,
 			},
 		});
 
-		const asaasCharge = await paymentGateway.get<AsaasCharge>(
-			`/payments/${charge.asaasChargeId}`,
-		);
-
-		if (asaasCharge.data.installment) {
+		if (chargeData.installment) {
 			await paymentGateway.delete(
-				`/installments/${asaasCharge.data.installment}`,
+				`/installments/${chargeData.installment}`,
 			);
-		} else {
-			await paymentGateway.delete(`/payments/${charge.asaasChargeId}`);
 		}
 
 		return charge;

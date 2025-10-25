@@ -32,6 +32,16 @@ export const AsaasWebhookController = {
 				AsaasService.failedPayment(payment);
 				break;
 			}
+			case 'PAYMENT_UPDATED': {
+				const payment = body.payment;
+				AsaasService.updateCharge(payment);
+				break;
+			}
+			case 'PAYMENT_DELETED': {
+				const payment = body.payment;
+				AsaasService.deleteCharge(payment);
+				break;
+			}
 			default: {
 				console.log(`Este evento não é aceito ${body.event}`);
 			}
