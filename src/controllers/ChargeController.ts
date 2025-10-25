@@ -23,7 +23,7 @@ export const ChargeController = {
 		const charge = await ChargeService.getCharge(id);
 
 		return res.json({
-			message: 'Cobrança carregada com sucesso (incluindo suas Cobranças)',
+			message: 'Cobrança carregada com sucesso',
 			charge,
 		});
 	},
