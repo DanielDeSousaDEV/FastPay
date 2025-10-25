@@ -19,7 +19,7 @@
 			"suspicious": {
 				"noUnassignedVariables": "warn"
 			}
-		},
+		}
 	},
 	"javascript": {
 		"formatter": {
