@@ -39,10 +39,7 @@ export const CostumerService = {
 	async createCostumer(costumeData: CreateCostumerRequest) {
 		const emailAlredyUses = await prisma.customer.findFirst({
 			where: {
-				OR: [
-					{email: costumeData.email},
-					{document: costumeData.document},
-				]
+				OR: [{ email: costumeData.email }, { document: costumeData.document }],
 			},
 		});
 
@@ -137,7 +134,9 @@ export const CostumerService = {
 			},
 		});
 
-		await paymentGateway.delete<AsaasCustomer[]>(`/customers/${costumer.asaasCustomerId}`);
+		await paymentGateway.delete<AsaasCustomer[]>(
+			`/customers/${costumer.asaasCustomerId}`,
+		);
 
 		const charges = await prisma.charge.findMany({
 			where: {

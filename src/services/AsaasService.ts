@@ -5,7 +5,7 @@ import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundExcepti
 import { prisma } from '../lib/prisma';
 import type { AsaasCharge } from '../@types/asaas/Charge';
 import { ChargeNotCanUpdated } from '../exceptions/ChargeNotCanUpdated';
-import { AsaasInstallment } from '../@types/asaas/Installment';
+import type { AsaasInstallment } from '../@types/asaas/Installment';
 
 export const AsaasService = {
 	async createCharge(chargeData: AsaasCharge) {
@@ -21,19 +21,19 @@ export const AsaasService = {
 
 		const chargeAlredyCreated = await prisma.charge.findUnique({
 			where: {
-				asaasChargeId: chargeData.id
-			}
-		})
+				asaasChargeId: chargeData.id,
+			},
+		});
 
 		if (chargeAlredyCreated) {
 			await prisma.charge.update({
 				where: {
-					asaasChargeId: chargeData.id
+					asaasChargeId: chargeData.id,
 				},
 				data: {
 					amount: chargeData.value,
-				}
-			})
+				},
+			});
 
 			return chargeAlredyCreated;
 		}
@@ -55,8 +55,8 @@ export const AsaasService = {
 					installments: installment.data.installmentCount,
 
 					...(chargeData.installmentNumber && {
-						asaasInstallmentId: chargeData.installment
-					})
+						asaasInstallmentId: chargeData.installment,
+					}),
 				}),
 			},
 			omit: {
@@ -79,9 +79,9 @@ export const AsaasService = {
 		}
 
 		const updatedCharge = await prisma.charge.update({
-			where: {asaasChargeId: chargeData.id},
-			data: {status: ChargeStatus.PAID}
-		})
+			where: { asaasChargeId: chargeData.id },
+			data: { status: ChargeStatus.PAID },
+		});
 
 		return updatedCharge;
 	},
@@ -98,9 +98,9 @@ export const AsaasService = {
 		}
 
 		const updatedCharge = await prisma.charge.update({
-			where: {asaasChargeId: chargeData.id},
-			data: {status: ChargeStatus.EXPIRED}
-		})
+			where: { asaasChargeId: chargeData.id },
+			data: { status: ChargeStatus.EXPIRED },
+		});
 
 		return updatedCharge;
 	},
@@ -117,9 +117,9 @@ export const AsaasService = {
 		}
 
 		const updatedCharge = await prisma.charge.update({
-			where: {asaasChargeId: chargeData.id},
-			data: {status: ChargeStatus.FAILED}
-		})
+			where: { asaasChargeId: chargeData.id },
+			data: { status: ChargeStatus.FAILED },
+		});
 
 		return updatedCharge;
 	},
@@ -172,9 +172,7 @@ export const AsaasService = {
 		});
 
 		if (chargeData.installment) {
-			await paymentGateway.delete(
-				`/installments/${chargeData.installment}`,
-			);
+			await paymentGateway.delete(`/installments/${chargeData.installment}`);
 		}
 
 		return charge;

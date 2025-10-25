@@ -15,7 +15,7 @@ export const ChargeService = {
 		const charges = await prisma.charge.findMany({
 			omit: {
 				asaasChargeId: true,
-				asaasInstallmentId: true
+				asaasInstallmentId: true,
 			},
 		});
 
@@ -75,8 +75,8 @@ export const ChargeService = {
 					installments: chargeData.installments,
 
 					...(chargeData.installments > 1 && {
-						asaasInstallmentId: asaasCharge.data.installment
-					})
+						asaasInstallmentId: asaasCharge.data.installment,
+					}),
 				}),
 			},
 			omit: {
@@ -144,9 +144,7 @@ export const ChargeService = {
 		});
 
 		if (charge.installments && charge.installments > 1) {
-			await paymentGateway.delete(
-				`/installments/${charge.asaasInstallmentId}`,
-			);
+			await paymentGateway.delete(`/installments/${charge.asaasInstallmentId}`);
 		} else {
 			await paymentGateway.delete(`/payments/${charge.asaasChargeId}`);
 		}
