@@ -1,0 +1,1441 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FastPay",
+    "version": "1.0.0",
+    "description": ""
+  },
+  "servers": [
+    {
+      "url": "{{baseUrl}}"
+    }
+  ],
+  "paths": {
+    "/costumers": {
+      "get": {
+        "summary": "index",
+        "tags": [
+          "customers"
+        ],
+        "responses": {
+          "200": {
+            "description": "index",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "costumers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string",
+                            "format": "email"
+                          },
+                          "document": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "create",
+        "tags": [
+          "customers"
+        ],
+        "responses": {
+          "404": {
+            "description": "document-or-email-alredy-used",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "create",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "costumer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "document": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 100,
+                    "description": "Nome completo do cliente"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Endereço de e-mail válido",
+                    "format": "email"
+                  },
+                  "document": {
+                    "type": "string",
+                    "pattern": "^(\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}|\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\d{4}-?\\d{2})$",
+                    "description": "CPF (000.000.000-00) ou CNPJ (00.000.000/0000-00)"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "document"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/costumers/{id}": {
+      "get": {
+        "summary": "show",
+        "tags": [
+          "customers"
+        ],
+        "responses": {
+          "200": {
+            "description": "show",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "costumer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "document": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not-found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "deprecated": false
+          }
+        }
+      ],
+      "put": {
+        "summary": "update",
+        "tags": [
+          "customers"
+        ],
+        "responses": {
+          "200": {
+            "description": "update",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "costumer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "document": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not-found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 100,
+                    "description": "Nome completo do cliente"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Endereço de e-mail válido",
+                    "format": "email"
+                  },
+                  "document": {
+                    "type": "string",
+                    "pattern": "^(\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}|\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\d{4}-?\\d{2})$",
+                    "description": "CPF (000.000.000-00) ou CNPJ (00.000.000/0000-00)"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "document"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete",
+        "tags": [
+          "customers"
+        ],
+        "responses": {
+          "200": {
+            "description": "delete",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "costumer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "document": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not-found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charges": {
+      "get": {
+        "summary": "index",
+        "tags": [
+          "charge"
+        ],
+        "responses": {
+          "200": {
+            "description": "index",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "charges": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "amount": {
+                            "type": "integer"
+                          },
+                          "currency": {
+                            "type": "string"
+                          },
+                          "paymentType": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "dueDate": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "installments": {
+                            "nullable": true
+                          },
+                          "invoiceUrl": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "customerId": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "create",
+        "tags": [
+          "charge"
+        ],
+        "responses": {
+          "200": {
+            "description": "create",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "charge": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "amount": {
+                          "type": "integer"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "paymentType": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "dueDate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "installments": {
+                          "nullable": true
+                        },
+                        "invoiceUrl": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "customerId": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not-found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "integer"
+                  },
+                  "currency": {
+                    "type": "string"
+                  },
+                  "customerId": {
+                    "type": "integer"
+                  },
+                  "dueDate": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "paymentType": {
+                    "type": "string",
+                    "enum": [
+                      "PIX",
+                      "BOLETO",
+                      "CREDIT_CARD"
+                    ]
+                  },
+                  "installments": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charges/{id}": {
+      "get": {
+        "summary": "show",
+        "tags": [
+          "charge"
+        ],
+        "responses": {
+          "200": {
+            "description": "show",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "charge": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "amount": {
+                          "type": "integer"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "paymentType": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "dueDate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "installments": {
+                          "nullable": true
+                        },
+                        "invoiceUrl": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "customerId": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not-found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "deprecated": false
+          }
+        }
+      ],
+      "put": {
+        "summary": "update",
+        "tags": [
+          "charge"
+        ],
+        "responses": {
+          "200": {
+            "description": "update",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "charge": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "amount": {
+                          "type": "integer"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "paymentType": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "dueDate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "installments": {
+                          "nullable": true
+                        },
+                        "invoiceUrl": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "customerId": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "not-can-update",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not-found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number"
+                  },
+                  "currency": {
+                    "type": "string"
+                  },
+                  "dueDate": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete",
+        "tags": [
+          "charge"
+        ],
+        "responses": {
+          "200": {
+            "description": "delete",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "charge": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "amount": {
+                          "type": "integer"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "paymentType": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "dueDate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "installments": {
+                          "nullable": true
+                        },
+                        "invoiceUrl": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "customerId": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not-found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/up": {
+      "get": {
+        "summary": "up",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "up",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Date": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "deprecated": false
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "deprecated": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

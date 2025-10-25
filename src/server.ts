@@ -7,6 +7,8 @@ import { ErrorHandler } from './middlewares/ErrorHandler';
 import CostumersRoutes from './routes/CostumersRoutes';
 import ChargesRoutes from './routes/ChargesRoutes';
 import WebhookRoutes from './routes/WebhookRoutes';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../openapi.json';
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.use(statusMonitor(config));
 app.use(CostumersRoutes);
 app.use(ChargesRoutes);
 app.use(WebhookRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/up', (_req, res) => {
 	res.send('Servidor ativo');
