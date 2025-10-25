@@ -111,6 +111,10 @@ _Siga o passo a passo abaixo para configurar o projeto em seu ambiente local._
 
 <p align="right">(<a href="#readme-top">Voltar para o topo</a>)</p>
 
+# Testes
+Criei duas formas de realiza teste na aplicação
+* Pela [collection do Postman](https://drive.google.com/file/d/1PfCR8yYdcUBEDfBeZQoWhto2nzU0Y845/view?usp=sharing).
+* Pela interface do swagger disponível em `/api-docs`.
 
 <!-- CONTACT -->
 ## Contato
