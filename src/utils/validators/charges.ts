@@ -20,7 +20,19 @@ const CreateChargeRequestBaseFields = {
 	customerId: z
 		.int('Por favor informe cliente da Cobrança')
 		.positive('Por favor informe cliente da Cobrança'),
-	dueDate: z.iso.date('Por favor informe a data de validade da Cobrança'),
+	dueDate: z.iso
+		.date('Por favor informe a data de validade da Cobrança')
+		.refine(
+			(dateStr) => {
+				const date = new Date(dateStr);
+				const today = new Date();
+				today.setHours(0, 0, 0, 0); // ignora horário
+				return date >= today;
+			},
+			{
+				message: 'Por favor informe uma data igual ou maior que hoje',
+			},
+		),
 };
 
 const CreatePixChargeRequest = z.object({
@@ -60,7 +72,19 @@ const UpdateChargeRequestBaseFields = {
 		.string('Por favor informe a moeda da Cobrança')
 		.min(1, 'Por favor informe a moeda da Cobrança')
 		.max(255, 'A moeda da Cobrança deve ter no máximo 255 caracteres'),
-	dueDate: z.iso.date('Por favor informe a data de validade da Cobrança'),
+	dueDate: z.iso
+		.date('Por favor informe a data de validade da Cobrança')
+		.refine(
+			(dateStr) => {
+				const date = new Date(dateStr);
+				const today = new Date();
+				today.setHours(0, 0, 0, 0); // ignora horário
+				return date >= today;
+			},
+			{
+				message: 'Por favor informe uma data igual ou maior que hoje',
+			},
+		),
 };
 
 const UpdatePixChargeRequest = z.object({
