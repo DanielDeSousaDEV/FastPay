@@ -3,12 +3,9 @@ import { paymentGateway } from '../config/paymentGatewayApi';
 import { ChargeNotFoundException } from '../exceptions/ChargeNotFoundException';
 import { CostumerNotFoundException } from '../exceptions/CostumerNotFoundException';
 import { prisma } from '../lib/prisma';
-import type {
-	CreateChargeRequest,
-	UpdateChargeRequest,
-} from '../utils/validators/charges';
 import type { AsaasCharge } from '../@types/asaas/Charge';
 import { ChargeNotCanUpdated } from '../exceptions/ChargeNotCanUpdated';
+import { AsaasInstallment } from '../@types/asaas/Installment';
 
 export const AsaasService = {
 	async createCharge(chargeData: AsaasCharge) {
@@ -32,6 +29,10 @@ export const AsaasService = {
 			return chargeAlredyCreated;
 		}
 
+		const installment = await paymentGateway.get<AsaasInstallment>(
+			`/installments/${chargeData.installment}`,
+		);
+
 		const charge = await prisma.charge.create({
 			data: {
 				amount: chargeData.value,
@@ -42,7 +43,7 @@ export const AsaasService = {
 				customerId: costumer.id,
 				invoiceUrl: chargeData.invoiceUrl,
 				...(chargeData.billingType === PaymentType.CREDIT_CARD && {
-					installments: chargeData.installmentNumber,
+					installments: installment.data.installmentCount,
 
 					...(chargeData.installmentNumber && {
 						asaasInstallmentId: chargeData.installment
