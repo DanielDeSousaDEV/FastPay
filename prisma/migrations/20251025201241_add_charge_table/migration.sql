@@ -2,13 +2,15 @@
 CREATE TABLE `Charge` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `amount` DOUBLE NOT NULL,
-    `paymentType` ENUM('PIX', 'CREDIT_CARD', 'PAYMENT_SLIP') NOT NULL,
+    `currency` VARCHAR(191) NOT NULL,
+    `paymentType` ENUM('PIX', 'CREDIT_CARD', 'BOLETO') NOT NULL,
     `status` ENUM('PENDING', 'PAID', 'FAILED', 'EXPIRED') NOT NULL DEFAULT 'PENDING',
-    `dueDate` DATETIME(3) NULL,
+    `dueDate` DATETIME(3) NOT NULL,
     `installments` INTEGER NULL,
+    `asaasInstallmentId` VARCHAR(191) NULL,
+    `invoiceUrl` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `asaasChargeId` VARCHAR(191) NOT NULL,
+    `customerId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Charge_asaasChargeId_key`(`asaasChargeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
