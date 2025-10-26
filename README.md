@@ -108,6 +108,7 @@ _Siga o passo a passo abaixo para configurar o projeto em seu ambiente local._
       ```sh
       npm run dev
       ```
+8.  (Opcional) Para testar a integração dos webhooks do Asaas [crie um webhook pelo painel do Asaas](https://docs.asaas.com/docs/criar-novo-webhook-pela-aplicacao-web) e configure-o para mandar requisições para `/webhooks/asaas`.
 
 <p align="right">(<a href="#readme-top">Voltar para o topo</a>)</p>
 
