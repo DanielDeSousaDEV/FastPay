@@ -3,12 +3,11 @@
   "info": {
     "title": "FastPay",
     "version": "1.0.0",
-    "description": ""
+    "description": "Api desenvolvida para o processo seletivo da comeia"
   },
   "servers": [
-    {
-      "url": "{{baseUrl}}"
-    }
+    { "url": "http://localhost:3000", "description": "Local" },
+    { "url": "https://fastpay-production.up.railway.app", "description": "Produção" }
   ],
   "paths": {
     "/costumers": {

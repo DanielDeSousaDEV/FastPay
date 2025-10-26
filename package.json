@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "ts-node-dev --env-file .env --respawn src/server.ts",
 		"build": "tsc",
-		"start": "node --env-file .env dist/server.js",
+		"start": "node --env-file-if-exists .env dist/server.js",
 		"lint": "biome lint .",
 		"format": "biome format --write ."
 	},
